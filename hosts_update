@@ -1,6 +1,7 @@
 #!/bin/bash
 # Script by Wintervenom
 # https://bbs.archlinux.org/viewtopic.php?id=106367
+# Modified by schalox
 
 if (( "$(id -u)" != 0 )); then
     echo "This script must be run as root"
@@ -12,15 +13,25 @@ if [[ ! -f /etc/hosts.local ]]; then
     exit 1
 fi
 
-wget -c -O /tmp/hosts.txt "http://winhelp2002.mvps.org/hosts.txt"
+tmpfile="$(mktemp)"
 
-# Replace every IP address with 0.0.0.0.
-sed -r -e 's:^([0-9]{1,3}\.){3}[0-9]{1,3}:0.0.0.0:' /tmp/hosts.txt > /tmp/hosts.new.txt
-tail -n+`grep -nF 'Start of entries' /tmp/hosts.new.txt | cut -d':' -f1` /tmp/hosts.new.txt > /tmp/hosts.txt
+curl -s --o "$tmpfile" "http://winhelp2002.mvps.org/hosts.txt"
+if (( $? != 0 )) ; then
+    echo "Error: Failed to download the list"
+    rm -f "$tmpfile"
+    exit 1
+fi
 
-# Write this new list over the system hosts list.  MVPS' line feeds
-# are \n\r; we will be getting rid of those dirty carriage returns.
-# We'll first write the user's hosts head, then the black list.
+# Replace /etc/hosts with /etc/hosts.local
 cat /etc/hosts.local > /etc/hosts
-cat /tmp/hosts.txt | tr -d "\r" >> /etc/hosts
-rm /tmp/hosts*.txt
+
+# Delete irrelevant lines and carriage returns,
+# replace every IP address with 0.0.0.0,
+# append tmpfile to /etc/hosts
+awk '/^# \[Start of entries/,/^# \[end of entries/ {
+        sub(/\r$/, "")
+        sub(/^([0-9]{1,3}\.){3}[0-9]{1,3}/, "0.0.0.0")
+        print
+    }' "$tmpfile" >> /etc/hosts
+
+rm -f "$tmpfile"
