@@ -1,0 +1,10 @@
+[Unit]
+Description=hosts_update
+After=network.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/hosts_update
+
+[Install]
+WantedBy=multi-user.target
