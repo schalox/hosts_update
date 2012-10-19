@@ -15,9 +15,9 @@ fi
 
 tmpfile="$(mktemp)"
 
-curl -s --o "$tmpfile" "http://winhelp2002.mvps.org/hosts.txt"
+curl -s -o "$tmpfile" "http://winhelp2002.mvps.org/hosts.txt"
 if (( $? != 0 )) ; then
-    echo "Error: Failed to download the list"
+    echo "Failed to download the list"
     rm -f "$tmpfile"
     exit 1
 fi
