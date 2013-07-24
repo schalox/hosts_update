@@ -7,6 +7,7 @@ pkgrel=4
 pkgdesc='Updates /etc/hosts with the mvps blocklist to prevent thousands of parasites, hijackers and unwanted adware/spyware/privacy websites from working.'
 arch=('any')
 depends=()
+makedepends=('git')
 license=('GPL')
 provides=("$_upstream")
 conflicts=("$_upstream")
