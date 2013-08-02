@@ -18,7 +18,8 @@ source=('git://github.com/schalox/hosts_update.git')
 sha256sums=('SKIP')
 
 pkgver() {
-    date '+%Y%m%d'
+    _tmpver="$(git log -n 1 --format="%cd" --date=short)"
+    echo "${_tmpver//-/}"
 }
 
 package() {
