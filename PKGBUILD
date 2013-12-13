@@ -2,8 +2,8 @@
 # Contributor: schalox <schalox at gmail dot com>
 _upstream=hosts_update
 pkgname=hosts_update_schalox
-pkgver=0.0.0
-pkgrel=4
+pkgver=1.0
+pkgrel=1
 pkgdesc='Updates /etc/hosts with the mvps blocklist to prevent thousands of parasites, hijackers and unwanted adware/spyware/privacy websites from working.'
 arch=('any')
 depends=()
