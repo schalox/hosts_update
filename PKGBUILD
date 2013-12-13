@@ -2,7 +2,7 @@
 # Contributor: schalox <schalox at gmail dot com>
 _upstream=hosts_update
 pkgname=hosts_update_schalox
-pkgver=1.0
+pkgver=0.0.0
 pkgrel=1
 pkgdesc='Updates /etc/hosts with the mvps blocklist to prevent thousands of parasites, hijackers and unwanted adware/spyware/privacy websites from working.'
 arch=('any')
@@ -18,6 +18,7 @@ source=('git://github.com/schalox/hosts_update.git')
 sha256sums=('SKIP')
 
 pkgver() {
+    cd "$_upstream"
     _tmpver="$(git log -n 1 --format="%cd" --date=short)"
     echo "${_tmpver//-/}"
 }
